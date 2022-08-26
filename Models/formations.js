@@ -4,7 +4,7 @@ module.exports = (sequelize, Sequelize) => {
   const Formations = sequelize.define(
     "Formations",
     {
-      id: {
+      formationid: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -27,7 +27,8 @@ module.exports = (sequelize, Sequelize) => {
       timestamps: false,
     }
   );
-  Formations.associate = function ({participant}) {
+  Formations.associate = (models)=> {
+    Formations.hasMany(models.participant,{foreignKey:'formationid'});
   
   };
 

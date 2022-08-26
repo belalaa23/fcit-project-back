@@ -7,7 +7,7 @@ const { QueryTypes, sequelize } = require("sequelize");
 router.get("/orm", async (req, res) => {
   let users;
   try {
-    await models.Formations.findAll().then((result) => {
+    await models.evaluation.findAll().then((result) => {
       try {
         users = result;
       } catch (error) {
@@ -26,7 +26,7 @@ router.get("/orm", async (req, res) => {
 router.get( "/orm/:id" , async (req, res) => {
   try {
     console.log(req.params.id);
-    const user= await models.Formations.findOne({ where: { formationid: req.params.id } });
+    const user= await models.evaluation.findAll({ where: {evaluationid: req.params.id } });
     res.send(user);
   } catch (err) {
     console.log(err);
@@ -41,7 +41,7 @@ router.get( "/orm/:id" , async (req, res) => {
 router.post("/orm", async (req, res) => {
   
  try {
-  await models.Formations.create({ id: req.body.id, done: req.body.done ,title:req.body.title,date:req.body.date,nombreparticipant:req.body.nombreparticipant})
+  await models.participant.create({ evaluationid: req.body.id, participantid: req.body.participantid , commentaire:req.body.commentaire , pointfort:req.body.pointfort,autonomie:req.body.autonomie  , assimulation_et_realistaion: req.body.assimulation_et_realistaion, evt_obj1: req.body.evt_obj1 , evt_obj2:req.body.evt_obj2 , evt_obj3:req.body.evt_obj3,evt_obj4:req.body.evt_obj4, evt_obj5: req.body.evt_obj5 ,  evc_obj1: req.body.evc_obj1 , evc_obj2:req.body.evc_obj2 , evc_obj3:req.body.evc_obj3,evc_obj4:req.body.evc_obj4,evc_obj5:req.body.evc_obj5})
   res.send("ok");
  } catch (err) {
   console.log(err);
@@ -51,15 +51,16 @@ router.post("/orm", async (req, res) => {
 });
 
 //updating data using the ORM (Model : Users)
-router.get("/update/:id", async (req, res) => {
+router.put("/update/:id", async (req, res) => {
   
   try {
-   
+   const user=req.body;
    await models.Formations.update({ 
-    done:true
+    id:user.id,
+    mail : user.mail
     }
      ,{ where:{
-        formationid:req.params.id
+        id:req.params.id
       }
      })
    res.send("ok");
@@ -86,7 +87,7 @@ router.get("/update/:id", async (req, res) => {
  //updating data using the ORM (Model : Users)
  router.delete("/delete/:id", async (req, res) => {
    try {
-    await models.Formations.destroy({ 
+    await models.participant.destroy({ 
      where:{
          id:req.params.id
        }
@@ -100,7 +101,7 @@ router.get("/update/:id", async (req, res) => {
 
 // Case 2 : Getting data using queries
 router.get("/query", async (req, res) => {
-  const users = await models.sequelize.query(`SELECT count(*) FROM Formations as f ,participants as p where p.formationid=f.formationid and f.formationid= ${req.body.id} ;`, {
+  const users = await models.sequelize.query("SELECT * FROM Users", {
     type: QueryTypes.SELECT,
   });
   res.send(users);

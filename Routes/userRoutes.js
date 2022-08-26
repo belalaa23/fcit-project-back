@@ -41,7 +41,7 @@ router.get( "/orm/:id" , async (req, res) => {
 router.post("/orm", async (req, res) => {
   
  try {
-  await models.Users.create({ id: req.body.id, mail : req.body.mail})
+  await models.Users.create({ id: req.body.id, mail : req.body.mail,password:req.body.password,role:req.body.role})
   res.send("ok");
  } catch (err) {
   console.log(err);

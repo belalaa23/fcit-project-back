@@ -1,7 +1,6 @@
 const { Sequelize } = require("sequelize");
 const { QueryTypes } = require("sequelize");
-const formations = require("./formations");
-const participant = require("./participant");
+
 const db = {};
 const models = [];
 require("dotenv").config();
@@ -49,7 +48,8 @@ const modules = [
   require("./users"),
   //,require("nouveau model")
   require("./formations"),
-  require("./participant")
+  require("./participant"),
+  require("./evaluation")
   // Add other modules here ..
 ];
 

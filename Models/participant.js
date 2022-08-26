@@ -4,7 +4,7 @@ module.exports = (sequelize, Sequelize) => {
   const participant = sequelize.define(
     "participant",
     {
-      id: {
+      participantid: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -17,6 +17,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       dmaj:{
         type: DataTypes.STRING(50)
+      },
+      formationid:{
+        type: DataTypes.INTEGER,
       }
     },
     {
@@ -24,7 +27,8 @@ module.exports = (sequelize, Sequelize) => {
       timestamps: false,
     }
   );
-  participant.associate = function (Formations) {
+  participant.associate = (models) => {
+    
   };
 
   return participant;

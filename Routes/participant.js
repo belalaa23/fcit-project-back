@@ -7,7 +7,7 @@ const { QueryTypes, sequelize } = require("sequelize");
 router.get("/orm", async (req, res) => {
   let users;
   try {
-    await models.Formations.findAll().then((result) => {
+    await models.participant.findAll().then((result) => {
       try {
         users = result;
       } catch (error) {
@@ -26,7 +26,7 @@ router.get("/orm", async (req, res) => {
 router.get( "/orm/:id" , async (req, res) => {
   try {
     console.log(req.params.id);
-    const user= await models.Formations.findOne({ where: { formationid: req.params.id } });
+    const user= await models.participant.findAll({ where: { formationid: req.params.id } });
     res.send(user);
   } catch (err) {
     console.log(err);
@@ -41,7 +41,7 @@ router.get( "/orm/:id" , async (req, res) => {
 router.post("/orm", async (req, res) => {
   
  try {
-  await models.Formations.create({ id: req.body.id, done: req.body.done ,title:req.body.title,date:req.body.date,nombreparticipant:req.body.nombreparticipant})
+  await models.participant.create({ id: req.body.id, name: req.body.name ,etat:req.body.etat,dmaj:req.body.dmaj,formationid:req.body.formationid})
   res.send("ok");
  } catch (err) {
   console.log(err);
@@ -55,11 +55,11 @@ router.get("/update/:id", async (req, res) => {
   
   try {
    
-   await models.Formations.update({ 
-    done:true
+   await models.participant.update({ 
+    etat:"évaluer"
     }
      ,{ where:{
-        formationid:req.params.id
+      participantid:req.params.id
       }
      })
    res.send("ok");
@@ -86,7 +86,7 @@ router.get("/update/:id", async (req, res) => {
  //updating data using the ORM (Model : Users)
  router.delete("/delete/:id", async (req, res) => {
    try {
-    await models.Formations.destroy({ 
+    await models.participant.destroy({ 
      where:{
          id:req.params.id
        }
@@ -100,7 +100,7 @@ router.get("/update/:id", async (req, res) => {
 
 // Case 2 : Getting data using queries
 router.get("/query", async (req, res) => {
-  const users = await models.sequelize.query(`SELECT count(*) FROM Formations as f ,participants as p where p.formationid=f.formationid and f.formationid= ${req.body.id} ;`, {
+  const users = await models.sequelize.query("SELECT * FROM Users", {
     type: QueryTypes.SELECT,
   });
   res.send(users);
